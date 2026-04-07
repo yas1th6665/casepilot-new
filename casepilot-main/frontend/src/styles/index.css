@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #102033;
+  background: #f8f4eb;
+  font-family: Manrope, sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(169, 122, 43, 0.12), transparent 24%),
+    linear-gradient(180deg, #f8f4eb 0%, #f1e8d8 100%);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] body {
+  color: #e7edf7;
+  background:
+    radial-gradient(circle at top right, rgba(169, 122, 43, 0.15), transparent 24%),
+    linear-gradient(180deg, #0d1420 0%, #101b2a 100%);
+}
+
+html[data-theme="dark"] .bg-white\/85,
+html[data-theme="dark"] .bg-white\/90,
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-white\/70 {
+  background-color: rgba(18, 27, 42, 0.88) !important;
+}
+
+html[data-theme="dark"] .bg-paper,
+html[data-theme="dark"] .bg-sand {
+  background-color: rgba(28, 40, 60, 0.92) !important;
+}
+
+html[data-theme="dark"] .text-ink {
+  color: #edf2fb !important;
+}
+
+html[data-theme="dark"] .text-stone-700,
+html[data-theme="dark"] .text-stone-600,
+html[data-theme="dark"] .text-stone-500 {
+  color: #c1cada !important;
+}
+
+html[data-theme="dark"] .border-stone-200,
+html[data-theme="dark"] .border-stone-200\/70,
+html[data-theme="dark"] .border-stone-200\/80,
+html[data-theme="dark"] .border-stone-300 {
+  border-color: rgba(93, 109, 133, 0.45) !important;
+}
+
+html[data-theme="dark"] aside {
+  background: #0f1b2d !important;
+  border-color: rgba(93, 109, 133, 0.35) !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background-color: rgba(12, 19, 32, 0.88);
+  color: #edf2fb;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
