@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
+from backend.config import settings  # must be first — sets GOOGLE_APPLICATION_CREDENTIALS
 from backend.api import (
     brief,
     calendar_sync,
@@ -20,7 +25,6 @@ from backend.api import (
     tool_connections,
     user_settings,
 )
-from backend.config import settings
 
 app = FastAPI(title=settings.app_name, version=settings.app_version)
 
@@ -50,3 +54,14 @@ app.include_router(telegram_webhook.router, prefix="/webhook", tags=["Telegram"]
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": "casepilot-api"}
+
+
+# Serve the built React frontend — must come AFTER all API routes.
+_frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.isdir(_frontend_dist):
+    app.mount("/assets", StaticFiles(directory=os.path.join(_frontend_dist, "assets")), name="assets")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str = ""):  # noqa: ARG001
+        index = os.path.join(_frontend_dist, "index.html")
+        return FileResponse(index)

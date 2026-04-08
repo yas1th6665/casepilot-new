@@ -1,0 +1,23 @@
+.gcloudignore
+.git
+.gitignore
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Frontend dependencies (built inside Docker, don't upload)
+frontend/node_modules/
+frontend/dist/
+
+# Local files
+*.db
+.adk/
+.runlogs/
+*.log
+
+# Service account key file only — NOT *.json (package.json is needed)
+casepilot-yashu-774e798e497f.json

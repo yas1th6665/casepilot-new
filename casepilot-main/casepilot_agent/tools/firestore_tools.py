@@ -1,9 +1,28 @@
 """Firestore tools for CasePilot - used as ADK function tools."""
 
+import os
+import json
+import base64
 from google.cloud import firestore
+from google.oauth2 import service_account
 from datetime import date
 
-db = firestore.Client()
+
+def _get_firestore_client():
+    """Create Firestore client from GOOGLE_CREDENTIALS_JSON env var (base64 JSON)
+    or fall back to Application Default Credentials (local file / Cloud Run SA)."""
+    creds_b64 = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+    if creds_b64:
+        info = json.loads(base64.b64decode(creds_b64).decode("utf-8"))
+        creds = service_account.Credentials.from_service_account_info(info)
+        return firestore.Client(
+            credentials=creds,
+            project=info.get("project_id") or os.environ.get("GOOGLE_CLOUD_PROJECT"),
+        )
+    return firestore.Client()
+
+
+db = _get_firestore_client()
 
 
 def get_upcoming_hearings() -> dict:

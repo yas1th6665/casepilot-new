@@ -2,11 +2,28 @@
 
 from __future__ import annotations
 
+import base64
 import os
+import tempfile
 from dataclasses import dataclass
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Decode GOOGLE_CREDENTIALS_JSON and write to a temp file so that
+# google.auth.default() can find Application Default Credentials.
+_creds_b64 = os.getenv("GOOGLE_CREDENTIALS_JSON", "")
+if _creds_b64 and not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
+    try:
+        _creds_json = base64.b64decode(_creds_b64).decode()
+        _tmp = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".json", delete=False, prefix="casepilot_gsa_"
+        )
+        _tmp.write(_creds_json)
+        _tmp.close()
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = _tmp.name
+    except Exception as _e:
+        print(f"[config] Warning: could not decode GOOGLE_CREDENTIALS_JSON: {_e}")
 
 
 @dataclass(frozen=True)

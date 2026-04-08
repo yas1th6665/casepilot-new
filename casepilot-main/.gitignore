@@ -10,3 +10,6 @@ dist/
 .runlogs/
 .vite/
 *.log
+# Service account key files - never commit these
+*-service-account*.json
+casepilot-yashu-774e798e497f.json
